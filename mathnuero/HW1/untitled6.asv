@@ -1,0 +1,33 @@
+gna_1 = 5;
+gk_1 = 0.6;
+V1 = (50*gna_1-90*gk_1)/(gna_1+gk_1)
+gna_2 = 0;
+gk_2 = 2;
+V2 = (50*gna_2-90*gk_2)/(gna_2+gk_2)
+gna_3 = 0.1;
+gk_3 = 0.6;
+V3 = (50*gna_3-90*gk_3)/(gna_3+gk_3)
+
+dV1 = @(t,V) -4*(gna_1*(V-50)+gk_1*(V+90));
+dV2 = @(V) -4*(gna_2*(V-50)+gk_2*(V+90));
+dV3 = @(V) -4*(gna_3*(V-50)+gk_3*(V+90));
+
+tspan1 = [0, 1];
+tspan2 = [1, 4];
+tspan3 = [4, 10];
+[t1,y1] = ode45(dV1, tspan1, V1);
+[t2,y2] = ode45(dV2, tspan2, V2);
+[t3,y3] = ode45(dV3, tspan3, V3);
+
+figure;
+plot (t1, y1, 'DisplayName', sprintf('V* = %d mV', round(V1)), 'LineWidth', 2,  Color="Blue");
+hold on
+plot (t2, y2, 'DisplayName', sprintf('V*  = %d mV', round(V2)),  'LineWidth', 2,  Color="Blue");
+hold on
+plot (t3, y3, 'DisplayName', sprintf('V*  = %d mV', round(V3)), 'LineWidth', 2,  Color="Blue");
+xlabel('Time(ms)');
+ylabel('Volts(mv)');
+title('Piecewise Voltage Approximation');
+legend show;
+grid on;
+
